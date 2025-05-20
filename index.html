@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-AI Chat Comparison</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Rubik:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Compare AI Models</h1>
+
+        <div class="instructions">
+            <p>
+                <strong>Note:</strong> API keys must be hardcoded into the <code>script.js</code> file.
+            </p>
+        </div>
+
+        <div class="prompt-area">
+            <textarea id="user_prompt" placeholder="Enter your prompt for all models..."></textarea>
+            <button id="submit_prompt_btn" class="submit_buttons">Send to All Models</button>
+            <button id="submit_prompt_btn_openAI" class="submit_buttons">Send to OpenAI</button>
+            <button id="submit_prompt_btn_claude" class="submit_buttons">Send to Claude</button>
+            <button id="submit_prompt_btn_gemini" class="submit_buttons">Send to Gemini</button>
+        </div>
+
+        <div id="responses_container">
+            <div class="response-column">
+                <h2>ChatGPT (OpenAI)</h2>
+                <div class="status-indicator" id="openai_status">Ready</div>
+                <div class="response-content" id="openai_response_content"></div>
+            </div>
+            <div class="response-column">
+                <h2>Claude (Anthropic)</h2>
+                <div class="status-indicator" id="claude_status">Ready</div>
+                <div class="response-content" id="claude_response_content"></div>
+            </div>
+            <div class="response-column">
+                <h2>Gemini (Google AI)</h2>
+                <div class="status-indicator" id="gemini_status">Ready</div>
+                <div class="response-content" id="gemini_response_content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
