@@ -1,10 +1,45 @@
 document.addEventListener('DOMContentLoaded', () => {
+    
     // ---  ADD YOUR API KEYS HERE  ---
     const YOUR_OPENAI_API_KEY = ""; // Example: "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     const YOUR_CLAUDE_API_KEY = ""; // Example: "sk-ant-api03-xxxxxxxxxxxxxxxxxxxx"
     const YOUR_GEMINI_API_KEY = ""; // Example: "AIzaSyxxxxxxxxxxxxxxxxxxxxxxxxxxx"
     // --- END OF API KEYS ---
 
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+    
     const openAIKey = YOUR_OPENAI_API_KEY.trim();
     const claudeKey = YOUR_CLAUDE_API_KEY.trim();
     const geminiKey = YOUR_GEMINI_API_KEY.trim();
@@ -62,7 +97,8 @@ document.addEventListener('DOMContentLoaded', () => {
             { 
                 model: "claude-3-7-sonnet-20250219", 
                 max_tokens: 2048, 
-                messages: apiMessages 
+                messages: apiMessages ,
+                thinking: {"type": "disabled"}
             }
         );
         const response = await fetch(url, { 
@@ -93,13 +129,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
 
-    async function callGemini(currentChatHistory, apiKey) { // currentChatHistory IS the global geminiChatHistory
-        const model = "gemini-2.5-flash-preview-04-17"; 
+    async function callGemini(currentChatHistory, apiKey) {
+        const model = "gemini-2.0-flash"; //or gemini-2.5-flash-preview-04-17
         const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
     
         const body = JSON.stringify({
             contents: currentChatHistory, 
-            generationConfig: { "temperature": 0.7, "maxOutputTokens": 2048 }
+            generationConfig: { "temperature": 0.7, "maxOutputTokens": 2048 },
         });
     
         const response = await fetch(url, {
@@ -129,7 +165,6 @@ document.addEventListener('DOMContentLoaded', () => {
             } 
         } 
     
-        // Add the model's response (or API feedback message) to the same history array.
         currentChatHistory.push({ role: "model", parts: [{text: textResponse}] });
         submitBtnGemini.disabled = false;
         userPromptInput.disabled = false;
@@ -180,24 +215,23 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtnOpenAI.disabled = true;
         userPromptInput.disabled = true;
 
-        // Append current user prompt to UI for each active model
         if (openAIKey) appendUserPromptToUI(openaiResponseEl, promptText);
         
         userPromptInput.value = ''; 
 
         // --- OpenAI Call ---
         if (openAIKey) {
-            setLoadingState(openaiStatusEl, true, "ChatGPT (OpenAI)");
+            setLoadingState(openaiStatusEl, true, "ChatGPT");
             openaiMessages.push({ "role": "user", "content": promptText });
             try {
                 const response = await callOpenAI(openaiMessages, openAIKey);
                 openaiMessages.push({ "role": "assistant", "content": response });
-                appendAIResponseToUI(openaiResponseEl, response, "ChatGPT (OpenAI)");
-                setLoadingState(openaiStatusEl, false, "ChatGPT (OpenAI)", true);
+                appendAIResponseToUI(openaiResponseEl, response, "ChatGPT");
+                setLoadingState(openaiStatusEl, false, "ChatGPT", true);
             } catch (error) {
                 console.error("OpenAI Error:", error);
-                appendErrorToUI(openaiResponseEl, error.message, "ChatGPT (OpenAI)");
-                setLoadingState(openaiStatusEl, false, "ChatGPT (OpenAI)", false, error.message);
+                appendErrorToUI(openaiResponseEl, error.message, "ChatGPT");
+                setLoadingState(openaiStatusEl, false, "ChatGPT", false, error.message);
                 openaiMessages.pop(); 
             }
         } else {
@@ -221,7 +255,6 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtnClaude.disabled = true;
         userPromptInput.disabled = true;
 
-        // Append current user prompt to UI for each active model
         if (claudeKey) appendUserPromptToUI(claudeResponseEl, promptText);
         
         userPromptInput.value = ''; 
@@ -262,7 +295,6 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtnGemini.disabled = true;
         userPromptInput.disabled = true;
 
-        // Append current user prompt to UI for each active model
         if (geminiKey) appendUserPromptToUI(geminiResponseEl, promptText);
         
         userPromptInput.value = ''; 
@@ -309,7 +341,6 @@ document.addEventListener('DOMContentLoaded', () => {
         submitBtn.disabled = true;
         userPromptInput.disabled = true;
 
-        // Append current user prompt to UI for each active model
         if (openAIKey) appendUserPromptToUI(openaiResponseEl, promptText);
         if (claudeKey) appendUserPromptToUI(claudeResponseEl, promptText);
         if (geminiKey) appendUserPromptToUI(geminiResponseEl, promptText);
@@ -318,17 +349,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- OpenAI Call ---
         if (openAIKey) {
-            setLoadingState(openaiStatusEl, true, "ChatGPT (OpenAI)");
+            setLoadingState(openaiStatusEl, true, "ChatGPT");
             openaiMessages.push({ "role": "user", "content": promptText });
             try {
                 const response = await callOpenAI(openaiMessages, openAIKey);
                 openaiMessages.push({ "role": "assistant", "content": response });
-                appendAIResponseToUI(openaiResponseEl, response, "ChatGPT (OpenAI)");
-                setLoadingState(openaiStatusEl, false, "ChatGPT (OpenAI)", true);
+                appendAIResponseToUI(openaiResponseEl, response, "ChatGPT");
+                setLoadingState(openaiStatusEl, false, "ChatGPT", true);
             } catch (error) {
                 console.error("OpenAI Error:", error);
-                appendErrorToUI(openaiResponseEl, error.message, "ChatGPT (OpenAI)");
-                setLoadingState(openaiStatusEl, false, "ChatGPT (OpenAI)", false, error.message);
+                appendErrorToUI(openaiResponseEl, error.message, "ChatGPT");
+                setLoadingState(openaiStatusEl, false, "ChatGPT", false, error.message);
                 openaiMessages.pop(); 
             }
         } else {
@@ -394,8 +425,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }
-
-    
 
     // Initial UI setup
     openaiStatusEl.textContent = "OpenAI: Ready";
